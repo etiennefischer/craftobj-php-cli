@@ -35,13 +35,24 @@ class WikipediaScraper
         var_dump($th);
         //get all the td associated with the th and their text
         $td = $table->filter('th')->each(function (Crawler $node) {
-            return $node->siblings()->text();
+           $values = $node->siblings()->text();
+           return $this->parseAttributes($values);
         });
 
         var_dump($td);
 
         return array_combine($th, $td);
 
+    }
+
+    private function parseAttributes(string $attributeValue): mixed
+    {
+        $attributeValue = str_replace(' et', ',', $attributeValue);
+        if (strpos($attributeValue, ',') !== false) {
+            return array_map('trim', explode(',', $attributeValue));
+        }
+
+        return $attributeValue;
     }
 
 }

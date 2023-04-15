@@ -18,7 +18,8 @@ class ClassGenerator
         foreach ($properties as $property => $value) {
             $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $property))));
             $property = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($property);
-            $class .= "    private string \${$property}; \n";
+            $type = is_array($value) ? 'array' : 'string';
+            $class .= "    private $type \${$property};\n";
         }
 
         //constructor
@@ -35,7 +36,12 @@ class ClassGenerator
         foreach ($properties as $property => $value) {
            $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $property))));
            $property = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($property);
-           $class .= "            ->set" . ucfirst($property) . "('$value')\n";
+           if (is_array($value)) {
+               $value = "['" . implode("', '", $value) . "']";
+           } else {
+               $value = "'$value'";
+           }
+           $class .= "            ->set" . ucfirst($property) . "($value)\n";
         }
         $class .= "        ;\n";
         $class .= "    } \n \n";
@@ -44,13 +50,14 @@ class ClassGenerator
         foreach ($properties as $property => $value) {
             $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $property))));
             $property = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($property);
+            $type = is_array($value) ? 'array' : 'string';
 
-            $class .= "    public function get" . ucfirst($property) . "(): string \n";
+            $class .= "    public function get" . ucfirst($property) . "(): $type \n";
             $class .= "    { \n";
             $class .= "        return \$this->{$property};\n";
             $class .= "    } \n \n";
 
-            $class .= "    public function set" . ucfirst($property) . "(string \${$property}): self \n";
+            $class .= "    public function set" . ucfirst($property) . "($type \${$property}): self \n";
             $class .= "    { \n";
             $class .= "        \$this->{$property} = \${$property};\n \n";
             $class .= "        return \$this;\n";

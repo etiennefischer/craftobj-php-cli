@@ -4,12 +4,12 @@
  
  class Fruit 
  { 
-    private string $plante; 
-    private string $espece; 
-    private string $famille; 
-    private string $origine; 
-    private string $vitamines; 
-    private string $mineraux; 
+    private string $plante;
+    private string $espece;
+    private string $famille;
+    private string $origine;
+    private array $vitamines;
+    private array $mineraux;
  
     public function __construct() 
     { 
@@ -22,8 +22,8 @@
             ->setEspece('Malus domestica')
             ->setFamille('Rosaceae')
             ->setOrigine('Asie centrale')
-            ->setVitamines('A, B1, B2, B3, B5, B6, B9, C, E et K')
-            ->setMineraux('Calcium, fer, magnésium, manganèse, phosphore, potassium, sodium et zinc')
+            ->setVitamines(['A', 'B1', 'B2', 'B3', 'B5', 'B6', 'B9', 'C', 'E', 'K'])
+            ->setMineraux(['Calcium', 'fer', 'magnésium', 'manganèse', 'phosphore', 'potassium', 'sodium', 'zinc'])
         ;
     } 
  
@@ -75,24 +75,24 @@
         return $this;
     } 
  
-    public function getVitamines(): string 
+    public function getVitamines(): array 
     { 
         return $this->vitamines;
     } 
  
-    public function setVitamines(string $vitamines): self 
+    public function setVitamines(array $vitamines): self 
     { 
         $this->vitamines = $vitamines;
  
         return $this;
     } 
  
-    public function getMineraux(): string 
+    public function getMineraux(): array 
     { 
         return $this->mineraux;
     } 
  
-    public function setMineraux(string $mineraux): self 
+    public function setMineraux(array $mineraux): self 
     { 
         $this->mineraux = $mineraux;
  
