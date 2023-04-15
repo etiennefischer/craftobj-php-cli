@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Etienne\Craftobj\CraftObj;
+
+$options = getopt('i:o:c:', ['input:', 'output:', 'classname:']);
+
+$input = $options['i'] ?? $options['input'] ?? null;
+$output = $options['o'] ?? $options['output'] ?? null;
+$classname = $options['c'] ?? $options['classname'] ?? null;
+
+if (!$input || !$output || !$classname) {
+    $input = $input ?? readline('Entrez un terme pour Wikipedia (ex: Pomme) : ');
+    $output = $output ?? readline('Entrez le chemin du dossier de sortie (ex: output/edible) : ');
+    $classname = $classname ?? readline('Entrez le nom de la classe à générer (ex: Fruit) : ');
+}
+
+$craftObj = new CraftObj($classname, $input, $output);
+$craftObj->generate();
+
+$classFilePath = $output . '/' . $classname . '.php';
+include_once $classFilePath;
+
+$fullClassName = 'Etienne\\Craftobj\\' . $classname;
+
+if (class_exists($fullClassName)) {
+    $obj = new $fullClassName();
+    print_r($obj->sample());
+} else {
+    echo "La classe $classname n'existe pas";
+}
+

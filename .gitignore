@@ -1,0 +1,22 @@
+# .gitignore
+
+# Ignore system and editor files
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+
+# Ignore Composer dependencies and configuration
+/vendor/
+/composer.phar
+/composer.lock
+
+# Ignore PHPStorm IDE files
+/.idea/
+
+# Ignore cache, logs and temporary files
+/cache/
+/logs/
+/tmp/
+*.tmp
+*.bak
