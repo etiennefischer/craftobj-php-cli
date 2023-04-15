@@ -13,23 +13,23 @@ class ClassGenerator
 
     public function generate(array $properties): string
     {
-        $class = "<?php \r \r namespace Etienne\Craftobj; \r \r class $this->className \r { \r";
+        $class = "<?php \n \n namespace Etienne\Craftobj; \n \n class $this->className \n { \n";
         //properties
         foreach ($properties as $property => $value) {
             $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $property))));
             $property = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($property);
-            $class .= "    private string \${$property}; \r";
+            $class .= "    private string \${$property}; \n";
         }
 
         //constructor
-        $class .= " \r";
-        $class .= "    public function __construct() \r";
-        $class .= "    { \r";
-        $class .= "    } \r \r";
+        $class .= " \n";
+        $class .= "    public function __construct() \n";
+        $class .= "    { \n";
+        $class .= "    } \n \n";
 
         //add sample method
-        $class .= "    public function sample(): $this->className \r";
-        $class .= "    { \r";
+        $class .= "    public function sample(): $this->className \n";
+        $class .= "    { \n";
         $class .= "        return (new self())\n";
 
         foreach ($properties as $property => $value) {
@@ -38,26 +38,26 @@ class ClassGenerator
            $class .= "            ->set" . ucfirst($property) . "('$value')\n";
         }
         $class .= "        ;\n";
-        $class .= "    } \r \r";
+        $class .= "    } \n \n";
 
         //getters and setters
         foreach ($properties as $property => $value) {
             $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $property))));
             $property = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($property);
 
-            $class .= "    public function get" . ucfirst($property) . "(): string \r";
-            $class .= "    { \r";
+            $class .= "    public function get" . ucfirst($property) . "(): string \n";
+            $class .= "    { \n";
             $class .= "        return \$this->{$property};\n";
-            $class .= "    } \r \r";
+            $class .= "    } \n \n";
 
-            $class .= "    public function set" . ucfirst($property) . "(string \${$property}): self \r";
-            $class .= "    { \r";
-            $class .= "        \$this->{$property} = \${$property};\n \r";
+            $class .= "    public function set" . ucfirst($property) . "(string \${$property}): self \n";
+            $class .= "    { \n";
+            $class .= "        \$this->{$property} = \${$property};\n \n";
             $class .= "        return \$this;\n";
-            $class .= "    } \r \r";
+            $class .= "    } \n \n";
         }
 
-        $class .= "} \r";
+        $class .= "} \n";
 
         return $class;
     }
