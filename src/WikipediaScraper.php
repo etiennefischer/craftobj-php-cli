@@ -22,7 +22,7 @@ class WikipediaScraper
         //verify if a table with the class "infobox_v2" exists
         $crawler->filter('.infobox_v2')->each(function (Crawler $node) {
             if ($node->count() === 0) {
-                throw new Exception('No table with the class "infobox_v2" found');
+                throw new Exception('Tableau introuvable');
             }
         });
         //get the table
@@ -40,6 +40,10 @@ class WikipediaScraper
         });
 
         var_dump($td);
+
+        if (empty($th) || empty($td)) {
+            throw new Exception('Tableau incomplet');
+        }
 
         return array_combine($th, $td);
 

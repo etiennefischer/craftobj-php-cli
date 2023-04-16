@@ -18,7 +18,14 @@ class CraftObj
     public function generate(): void
     {
         $scraper = new WikipediaScraper($this->input);
-        $properties = $scraper->scrape();
+
+        try {
+            $properties = $scraper->scrape();
+        } catch (\Exception $e) {
+            echo 'Erreur: Tableau incomplet ou introuvable - ' . $e->getMessage();
+            exit;
+        }
+
 
         $generator = new ClassGenerator($this->className);
         $class = $generator->generate($properties);
